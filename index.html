@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            background-color: darkslateblue;
+            font-family: monospace, sans-serif;
+            color: whitesmoke;
+            font-size: 50px;
+        }
+    </style>
+    <title>Third World Zombies</title>
+</head>
+<body>
+    <script>
+
+alert(`THIRD WORLD ZOMBIES!
+---------------------------`);
+
+let hp = 100;
+let ataque = 30;
+let zHp, zAtaque, zTipo;
+let items = ["botiquin", "venda"];
+let matados = 0;
+let numCombate = 0; /*workaround para items tras combatir*/
+
+nuevoZombie()
+
+while(hp>0){
+    let opcion = combatePrompt();
+
+    if(opcion == "i" || opcion == "item" || opcion == 3){
+        inventario();
+    }else if(opcion == "a" || opcion == "ataque" || opcion == 1){
+        combate();
+    }else if(opcion == "iddqd" || opcion == "god" || opcion == "godmode"){
+        alert("wat");
+        hp = 1;
+        zHp = 99999999;
+    }else if(opcion==null){
+        hp = 0;
+    };
+};
+
+alert("Game over!\nMataste "+matados+" zombos.");
+
+/*------------------------------*/
+function combatePrompt() {
+    let m = (prompt("Tu HP: "+hp+"\n"
+    +zTipo+ ": " +zHp+
+    "\n\nElegí:\n(A)taque - (D)efensa - (I)tem)"));
+
+    if(m == null){
+        return m;
+    } else {
+        return m.toLowerCase();
+    }
+}
+
+/*---*/
+
+function combate() {
+    ataqueJugador = rand(ataque);
+    ataqueZombie = rand(zAtaque);
+    hp -= ataqueZombie;
+    zHp -= ataqueJugador;
+    alert("El zombo te ataca, causando "+ataqueZombie+
+    " de daño!\nAtacaste al zombo y le causaste "+ataqueJugador+
+    " de daño!"+muerto());
+
+    function muerto() {
+        if(zHp<=0){
+            matados++;
+            nuevoZombie();
+            return("\n\n--------------------\n\nMataste al zombo!\n"
+            +matados+" zombo(s) matado(s) en total.\n\nOh, snap! ahí viene otro enemigo! un "
+            +zTipo+"!");
+        } else {
+            return "";
+        }
+    }
+
+    if(rand(10)>9 && numCombate != matados && ataque == 30){
+        alert("Fua, una escopeta!\nMe la llevo.")
+        ataque = 50;
+    }
+
+    if(rand(2)>1 && numCombate != matados){
+        items = ["botiquin", "venda"];
+        alert("El zombo llevaba medicina encima!\nMatanga.")
+        numCombate=matados;
+    } else {
+        numCombate=matados;
+    }
+}
+
+/*---*/
+
+function inventario() {
+    if(items.length>0){
+        let opcion = prompt("Esto es lo que podés usar:\n"
+        +items+"\nElegí item o cancelá/Esc")
+
+        if(opcion == "botiquin" || opcion == "b" || opcion == 1 && hayItem(items, "botiquin")){
+            hp += 50;
+            if(hp>100){
+                hp = 100;
+            }
+            items=quitarItem(items, "botiquin")
+            alert("Usaste un botiquin\n+50 HP!")
+        }else if(opcion == "venda" || opcion == "v" || opcion == 2 && hayItem(items, "venda")){
+            hp += 20;
+            if(hp>100){
+                hp = 100;
+            }
+            items=quitarItem(items, "venda")
+            alert("Usaste una venda\n+20 HP!")
+        }
+    }else{
+        alert("Te quedaste sin items!");
+    }
+};
+
+/*---*/
+
+function rand(n){
+    return Math.floor(Math.random()*(n+1));
+}
+
+/*---*/
+
+function hayItem(arr, item){
+    let bool = false;
+    arr.forEach(i => {
+        if(i == item){
+            bool = true;
+        }
+    });
+    return bool;
+}
+/*+*/
+function quitarItem(arr, item){
+    sinElItem = [];
+    arr.forEach(i => {
+        if(i != item){
+            sinElItem.push(i);
+        }
+    });
+    return sinElItem
+}
+
+/*---*/
+
+function nuevoZombie(){
+    random = rand(5)
+
+    switch(random){
+        case 0:
+            zTipo="pibe zombo";
+            zHp=25;
+            zAtaque=5;
+            break;
+        case 1:
+            zTipo="zombo normal";
+            zHp=50;
+            zAtaque=10;
+            break;
+        case 2:
+            zTipo="zombo bruto";
+            zHp=75;
+            zAtaque=15;
+            break;
+        case 3:
+            zTipo="zombo hulk";
+            zHp=100;
+            zAtaque=20;
+            break;
+        case 4:
+            zTipo="Zombo pasado de pepa";
+            zHp=125;
+            zAtaque=25;
+            break;
+        case 5:
+            zTipo="Zombo barrabrava";
+            zHp=150;
+            zAtaque=30;
+            break;
+
+    }
+}
+
+    </script>
+</body>
+</html>
